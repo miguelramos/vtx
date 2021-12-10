@@ -1,0 +1,20 @@
+{
+  "name": "@monorepo/common",
+  "version": "1.0.0",
+  "source": "src/index.ts",
+  "files": ["dist"],
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
+  "types": "src/index.tsx",
+  "scripts": {
+    "build": "tsc && vite build"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
