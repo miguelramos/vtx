@@ -1,22 +1,23 @@
 {
-  "name": "workspace",
+  "name": "revite-sdk",
+  "dependencies": {
+    "cac": "^6.7.12",
+    "fs-extra": "^10.0.0",
+    "vite": "2.6.14"
+  },
   "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
     "@types/node": "^16.11.12",
-    "@vitejs/plugin-vue": "1.10.0",
-    "@vue/compiler-sfc": "3.2.22",
-    "typescript": "4.5.2",
-    "vite": "2.6.14",
-    "vue": "3.2.22"
+    "typescript": "4.5.2"
   },
   "scripts": {
     "build": "VITE_NAME=@monorepo/site vite build",
     "preview": "VITE_NAME=@monorepo/site vite preview",
-    "vite:inspect": "VITE_NAME=@monorepo/site node --inspect-brk ./node_modules/.bin/vite build"
+    "vite:inspect": "VITE_NAME=@monorepo/site node --inspect-brk ./node_modules/.bin/vite build",
+    "build:esbuild": "yarn workspace @revite/esbuild build"
   },
   "workspaces": [
-    "packages/*",
-    "apps/*",
-    "libs/*"
+    "packages/*"
   ],
   "version": "1.0.0",
   "license": "MIT",

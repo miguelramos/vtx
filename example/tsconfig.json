@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "allowJs": true
+  },
+  "include": [
+    "packages/**/*",
+    "libs/**/*",
+    "apps/**/*",
+    "tools/**/*"
+  ],
+  "exclude": ["node_modules"]
+}

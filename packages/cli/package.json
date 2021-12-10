@@ -1,0 +1,20 @@
+{
+  "name": "@revite/cli",
+  "files": ["dist"],
+  "main": "./dist/cli.umd.js",
+  "module": "./dist/cli.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/cli.es.js",
+      "require": "./dist/cli.umd.js"
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": false
+}

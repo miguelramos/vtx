@@ -1,0 +1,20 @@
+{
+  "name": "@revite/common",
+  "files": ["dist"],
+  "main": "./dist/common.umd.js",
+  "module": "./dist/common.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/common.es.js",
+      "require": "./dist/common.umd.js"
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": false
+}
