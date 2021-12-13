@@ -1,16 +1,32 @@
 const { build } = require('esbuild');
+const { dependencies } = require('../package.json');
 
-async function buildCommon() {
+const external = Object.entries(dependencies).map(([key]) => key);
+
+async function buildCli() {
 	return build({
 		bundle: true,
-		entryPoints: ['index.ts'],
+		entryPoints: ['src/cli.ts'],
 		format: 'cjs',
 		write: true,
 		platform: 'node',
 		outbase: 'src',
-		outfile: 'dist/cli.cjs.js',
-		external: ['esbuild']
+		outfile: 'dist/cli.js',
+		external
 	});
+}
+
+async function buildCommon() {
+  return build({
+    bundle: true,
+    entryPoints: ['index.ts'],
+    format: 'cjs',
+    write: true,
+    platform: 'node',
+    outbase: 'src',
+    outfile: 'dist/index.cjs.js',
+    external
+  });
 }
 
 async function buildModule() {
@@ -21,14 +37,15 @@ async function buildModule() {
 		write: true,
 		platform: 'node',
 		outbase: 'src',
-		outfile: 'dist/cli.esm.js',
-		external: ['esbuild']
+		outfile: 'dist/index.esm.js',
+		external
 	});
 }
 
 async function buildBundle() {
-	await buildCommon();
-	await buildModule();
+	await buildCli();
+  // await buildCommon();
+	// await buildModule();
 }
 
 buildBundle();

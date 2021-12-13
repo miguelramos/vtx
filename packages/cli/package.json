@@ -1,18 +1,27 @@
 {
-  "name": "@revite/cli",
+  "name": "@vtx/cli",
+  "bin": {
+    "vtx": "bin/vtx.js"
+  },
   "files": ["dist"],
-  "main": "./dist/cli.umd.js",
-  "module": "./dist/cli.es.js",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
   "exports": {
     ".": {
-      "import": "./dist/cli.es.js",
-      "require": "./dist/cli.umd.js"
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "cac": "^6.7.12",
+    "execa": "^6.0.0",
+    "vite": "2.6.14"
+  },
   "devDependencies": {},
   "scripts": {
-    "build": "node scripts/build.js"
+    "build": "node scripts/build.js",
+    "cli:execute": "node dist/cli.js -- preview --app site",
+    "cli:create": "node dist/cli.js -- create --app site"
   },
   "version": "1.0.0",
   "license": "MIT",

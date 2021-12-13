@@ -1,4 +1,7 @@
 const { build } = require('esbuild');
+const { dependencies } = require('../package.json');
+
+const external = Object.entries(dependencies).map(([key]) => key);
 
 async function buildCommon() {
 	return build({
@@ -9,7 +12,7 @@ async function buildCommon() {
 		platform: 'node',
 		outbase: 'src',
 		outfile: 'dist/common.cjs.js',
-		external: ['esbuild']
+		external
 	});
 }
 
@@ -22,7 +25,7 @@ async function buildModule() {
 		platform: 'node',
 		outbase: 'src',
 		outfile: 'dist/common.esm.js',
-		external: ['esbuild']
+		external
 	});
 }
 

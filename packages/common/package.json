@@ -1,5 +1,5 @@
 {
-  "name": "@revite/common",
+  "name": "@vtx/common",
   "files": ["dist"],
   "main": "./dist/common.umd.js",
   "module": "./dist/common.es.js",
@@ -9,8 +9,13 @@
       "require": "./dist/common.umd.js"
     }
   },
-  "dependencies": {},
-  "devDependencies": {},
+  "dependencies": {
+    "fs-extra": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^16.11.12"
+  },
   "scripts": {
     "build": "node scripts/build.js"
   },
