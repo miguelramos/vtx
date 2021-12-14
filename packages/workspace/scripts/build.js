@@ -11,7 +11,7 @@ async function buildCommon() {
 		write: true,
 		platform: 'node',
 		outbase: 'src',
-		outfile: 'dist/common.cjs.js',
+		outfile: 'dist/workspace.cjs.js',
 		external: [...external, 'esbuild', 'rollup', 'vite']
 	});
 }
@@ -24,7 +24,7 @@ async function buildModule() {
 		write: true,
 		platform: 'node',
 		outbase: 'src',
-		outfile: 'dist/common.esm.js',
+		outfile: 'dist/workspace.esm.js',
 		external: [...external, 'esbuild', 'rollup', 'vite']
 	});
 }

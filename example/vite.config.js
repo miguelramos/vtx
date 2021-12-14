@@ -13,6 +13,7 @@ const pkgIdx = pkgs.findIndex(pkg => pkg.name === pkgName);
  * @type {import('vite').UserConfig}
  */
 export default defineConfig({
+  
   root: paths[pkgIdx],
   plugins: [vue(), workspacesAlias('.')],
   server: {

@@ -1,15 +1,16 @@
 {
-  "name": "@vtx/common",
+  "name": "@vtx/workspace",
   "files": ["dist"],
-  "main": "./dist/common.cjs.js",
-  "module": "./dist/common.es.js",
+  "main": "./dist/workspace.cjs.js",
+  "module": "./dist/workspace.es.js",
   "exports": {
     ".": {
-      "import": "./dist/common.es.js",
-      "require": "./dist/common.cjs.js"
+      "import": "./dist/workspace.es.js",
+      "require": "./dist/workspace.cjs.js"
     }
   },
   "dependencies": {
+    "@vtx/common": "1.0.0",
     "fs-extra": "^10.0.0"
   },
   "devDependencies": {

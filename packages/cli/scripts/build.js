@@ -1,7 +1,16 @@
 const { build } = require('esbuild');
 const { dependencies } = require('../package.json');
+const { copy } = require('fs-extra');
+const { join, resolve } = require('path');
 
 const external = Object.entries(dependencies).map(([key]) => key);
+
+async function copyTemplates() {
+	const src = resolve(join(__dirname, '../src/templates'));
+	const destiny = resolve(join(__dirname, '../dist'));
+
+	return copy(src, destiny, { recursive: true });
+}
 
 async function buildCli() {
 	return build({
@@ -12,7 +21,7 @@ async function buildCli() {
 		platform: 'node',
 		outbase: 'src',
 		outfile: 'dist/cli.js',
-		external
+		external: [...external, 'esbuild', 'rollup', 'vite']
 	});
 }
 
@@ -25,7 +34,7 @@ async function buildCommon() {
     platform: 'node',
     outbase: 'src',
     outfile: 'dist/index.cjs.js',
-    external
+    external: [...external, 'esbuild', 'rollup', 'vite']
   });
 }
 
@@ -38,12 +47,13 @@ async function buildModule() {
 		platform: 'node',
 		outbase: 'src',
 		outfile: 'dist/index.esm.js',
-		external
+		external: [...external, 'esbuild', 'rollup', 'vite']
 	});
 }
 
 async function buildBundle() {
 	await buildCli();
+	await copyTemplates();
   // await buildCommon();
 	// await buildModule();
 }
