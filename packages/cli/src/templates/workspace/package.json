@@ -1,9 +1,8 @@
 {
   "name": "workspace",
   "devDependencies": {
-    "@websublime/vtx-common": "^1.0.0",
-    "@websublime/vtx-cli": "^1.0.0",
-    "@websublime/vtx-workspace": "^1.0.0",
+    "@websublime/vtx-common": "^0.0.1",
+    "@websublime/vtx-cli": "^0.0.1",
     "@types/node": "^16.11.12",
     "@vitejs/plugin-vue": "1.10.0",
     "@vue/compiler-sfc": "3.2.22",

@@ -35,7 +35,7 @@
     "type": "git",
     "url": "https://github.com/miguelramos/vtx"
   },
-  "version": "1.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "private": true
 }
