@@ -16,46 +16,18 @@ async function buildCli() {
 	return build({
 		bundle: true,
 		entryPoints: ['src/cli.ts'],
-		format: 'cjs',
 		write: true,
 		platform: 'node',
 		outbase: 'src',
 		outfile: 'dist/cli.js',
-		external: [...external, 'esbuild', 'rollup', 'vite']
-	});
-}
-
-async function buildCommon() {
-  return build({
-    bundle: true,
-    entryPoints: ['index.ts'],
-    format: 'cjs',
-    write: true,
-    platform: 'node',
-    outbase: 'src',
-    outfile: 'dist/index.cjs.js',
-    external: [...external, 'esbuild', 'rollup', 'vite']
-  });
-}
-
-async function buildModule() {
-	return build({
-		bundle: true,
-		entryPoints: ['index.ts'],
-		format: 'esm',
-		write: true,
-		platform: 'node',
-		outbase: 'src',
-		outfile: 'dist/index.esm.js',
-		external: [...external, 'esbuild', 'rollup', 'vite']
+    target: ['node12'],
+		external: [...external, 'esbuild', 'rollup', 'vite', 'chalk']
 	});
 }
 
 async function buildBundle() {
 	await buildCli();
 	await copyTemplates();
-  // await buildCommon();
-	// await buildModule();
 }
 
 buildBundle();

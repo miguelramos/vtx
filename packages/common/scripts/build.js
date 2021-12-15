@@ -14,31 +14,17 @@ async function buildCommon() {
 	return build({
 		bundle: true,
 		entryPoints: ['index.ts'],
-		format: 'cjs',
 		write: true,
 		platform: 'node',
 		outbase: 'src',
-		outfile: 'dist/common.cjs.js',
-		external: [...external, 'esbuild', 'rollup', 'vite']
-	});
-}
-
-async function buildModule() {
-	return build({
-		bundle: true,
-		entryPoints: ['index.ts'],
-		format: 'esm',
-		write: true,
-		platform: 'node',
-		outbase: 'src',
-		outfile: 'dist/common.esm.js',
+    target: ['node12'],
+		outfile: 'dist/common.js',
 		external: [...external, 'esbuild', 'rollup', 'vite']
 	});
 }
 
 async function buildBundle() {
 	await buildCommon();
-	await buildModule();
 }
 
 buildBundle();

@@ -3,14 +3,7 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/common.cjs.js",
-  "module": "./dist/common.es.js",
-  "exports": {
-    ".": {
-      "import": "./dist/common.es.js",
-      "require": "./dist/common.cjs.js"
-    }
-  },
+  "main": "./dist/common.js",
   "dependencies": {
     "fs-extra": "^10.0.0"
   },
