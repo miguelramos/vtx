@@ -1,5 +1,5 @@
 {
-  "name": "@vtx/common",
+  "name": "@websublime/vtx-common",
   "files": ["dist"],
   "main": "./dist/common.cjs.js",
   "module": "./dist/common.es.js",

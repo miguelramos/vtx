@@ -4,10 +4,10 @@ import { PackageJson } from './types';
 
 export const getWorkspaceRootPath = () => process.cwd();
 
-export const getCommandArguments = () => {
+export const getCommandArguments = (splitChar = ' ') => {
   return process.argv.slice(2).reduce<Record<string, any>>((acc, arg) => {
 
-    let [key, value = true] = arg.split('=');
+    let [key, value = true] = arg.split(splitChar);
 
     acc[key] = value === undefined ?
       true :

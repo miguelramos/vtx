@@ -10,7 +10,7 @@
   "engines": {
     "node": ">=12"
   },
-  "name": "vtx-sdk",
+  "name": "@websublime/vtx-sdk",
   "dependencies": {},
   "devDependencies": {
     "@changesets/changelog-github": "^0.3.0",
@@ -21,11 +21,11 @@
   "scripts": {
     "build": "yarn workspaces run build",
     "pack:local": "yarn workspaces run pack",
-    "build:common": "yarn workspace @vtx/common build",
-    "build:cli": "yarn workspace @vtx/cli build",
-    "execute:cli": "yarn workspace @vtx/cli cli:execute",
-    "create-workspace:cli": "yarn workspace @vtx/cli cli:create-workspace",
-    "create-app:cli": "yarn workspace @vtx/cli cli:create-app",
+    "build:common": "yarn workspace @websublime/vtx-common build",
+    "build:cli": "yarn workspace @websublime/vtx-cli build",
+    "execute:cli": "yarn workspace @websublime/vtx-cli cli:execute",
+    "create-workspace:cli": "yarn workspace @websublime/vtx-cli cli:create-workspace",
+    "create-app:cli": "yarn workspace @websublime/vtx-cli cli:create-app",
     "release": "yarn changeset publish"
   },
   "workspaces": [
