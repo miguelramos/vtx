@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/site",
+  "name": "@monorepo/app",
   "version": "1.0.0",
   "source": "src/index.ts",
   "files": ["dist"],

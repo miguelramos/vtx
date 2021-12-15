@@ -12,6 +12,12 @@ export const promptCreateWorkspace = async () => {
 			message: 'Workspace name'
 		},
 		{
+			name: 'namespace',
+			type: 'text',
+			message: 'Your namespace context: Example @workspace or empty',
+			initial: ''
+		},
+		{
 			name: 'target',
 			type: 'text',
 			message: 'Target directory',
@@ -28,12 +34,6 @@ export const promptCreateApp = async () => {
 			name: 'app',
 			type: 'text',
 			message: 'Your app name'
-		},
-		{
-			name: 'namespace',
-			type: 'text',
-			message: 'Your namespace context: Example @workspace or empty',
-			initial: ''
 		},
 		{
 			name: 'target',
