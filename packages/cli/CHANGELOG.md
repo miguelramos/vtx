@@ -1,5 +1,11 @@
 # @websublime/vtx-cli
 
+## 0.0.4
+
+### Patch Changes
+
+- [#9](https://github.com/miguelramos/vtx/pull/9) [`7efe6f2`](https://github.com/miguelramos/vtx/commit/7efe6f29e883ba2bd3bc830476838761222360dd) Thanks [@miguelramos](https://github.com/miguelramos)! - Chalk dependency downgrade
+
 ## 0.0.3
 
 ### Patch Changes

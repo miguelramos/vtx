@@ -30,7 +30,7 @@
     "cli:create-workspace": "node dist/cli.js create-workspace",
     "cli:create-app": "node dist/cli.js create-app"
   },
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "private": false
 }
