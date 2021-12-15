@@ -12,7 +12,7 @@
   "dependencies": {
     "@websublime/vtx-common": "^0.0.3",
     "cac": "^6.7.12",
-    "chalk": "^5.0.0",
+    "chalk": "^4.1.2",
     "fs-extra": "^10.0.0",
     "prompts": "^2.4.2",
     "vite": "2.6.14"
