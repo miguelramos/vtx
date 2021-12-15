@@ -26,6 +26,7 @@
     "execute:cli": "yarn workspace @websublime/vtx-cli cli:execute",
     "create-workspace:cli": "yarn workspace @websublime/vtx-cli cli:create-workspace",
     "create-app:cli": "yarn workspace @websublime/vtx-cli cli:create-app",
+    "version": "yarn changeset version",
     "release": "yarn changeset publish"
   },
   "workspaces": [
