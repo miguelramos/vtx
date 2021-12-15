@@ -5,7 +5,8 @@
   },
   "files": [
     "dist",
-    "bin"
+    "bin",
+    "@types"
   ],
   "main": "./dist/cli.js",
   "dependencies": {
@@ -23,6 +24,7 @@
   },
   "scripts": {
     "pack": "yarn build && yarn pack",
+    "tsd": "tsc --emitDeclarationOnly --outDir @types",
     "build": "node scripts/build.js",
     "cli:execute": "node dist/cli.js --app site --port 9092",
     "cli:create-workspace": "node dist/cli.js create-workspace",
