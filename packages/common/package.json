@@ -1,6 +1,8 @@
 {
   "name": "@websublime/vtx-common",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/common.cjs.js",
   "module": "./dist/common.es.js",
   "exports": {
@@ -20,7 +22,7 @@
     "pack": "yarn build && yarn pack",
     "build": "node scripts/build.js"
   },
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "private": false
 }
