@@ -14,7 +14,7 @@ export const viteServer = async (root: string, options: any, httpOptions: any) =
       root,
       base: options.base,
       mode: options.mode,
-      configFile: options.config,
+      configFile: options.config || './vite.config.js',
       logLevel: options.logLevel,
       clearScreen: options.clearScreen,
       server: httpOptions

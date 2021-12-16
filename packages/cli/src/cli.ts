@@ -70,7 +70,7 @@ cli.command('[root]')
 
     const appRoot = pkg ? pkgWorkspace.config.packages[pkg].dir : pkgWorkspace.config.packages[pkgWorkspace.config.default].dir;
 
-    const httpOptions = cleanOptions(rest);
+    const httpOptions = cleanOptions(JSON.parse(JSON.stringify(rest)));
 
     await viteServer(appRoot, rest, httpOptions);
   });

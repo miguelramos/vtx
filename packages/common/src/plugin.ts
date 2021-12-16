@@ -6,7 +6,7 @@
  */
 
 import { join } from 'path';
-import { getWorkspacePackages } from './utils';
+import { getWorkspacePackages, getWorkspacePackagesFolders } from './utils';
 
 export function workspacesAlias(...rootPaths: string[]) {
   return {
@@ -14,6 +14,7 @@ export function workspacesAlias(...rootPaths: string[]) {
 
     config: (userConfig: Record<string, any>) => {
       const { alias = {} } = userConfig.resolve || {};
+      const folders = getWorkspacePackagesFolders();
 
       const modifiedConfig = {
         ...userConfig,
@@ -22,7 +23,9 @@ export function workspacesAlias(...rootPaths: string[]) {
             ...Object.fromEntries(
               rootPaths
                 .flatMap((rootPath) => getWorkspacePackages(rootPath))
-                .map((pkg) => [pkg.name, join(pkg.name, pkg.source)])
+                .map((pkg, idx) => {
+                  return [pkg.name, join(folders[idx], pkg.source)];
+                })
             ),
             ...alias,
           },
