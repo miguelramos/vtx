@@ -37,13 +37,19 @@ function cleanOptions<Options extends Record<string, any>>(
 }
 
 cli
-  .option('-l, --lib <lib>', `[string] use specified lib to build`)
-  .option('-p, --app <app>', `[string] use specified app to run`);
+  .option('-b, --lib <lib>', `[string] use specified lib to build`)
+  .option('-p, --app <app>', `[string] use specified app to run`)
+  .option('-c, --config <file>', `[string] use specified config file`)
+  .option('--base <path>', `[string] public base path (default: /)`)
+  .option('-l, --logLevel <level>', `[string] info | warn | error | silent`)
+  .option('--clearScreen', `[boolean] allow/disable clear screen when logging`)
+  .option('-d, --debug [feat]', `[string | boolean] show debug logs`)
+  .option('-f, --filter <filter>', `[string] filter debug logs`)
+  .option('-m, --mode <mode>', `[string] set env mode`);
 
 cli.command('[root]')
   .alias('serve') // the command is called 'serve' in Vite's API
   .alias('dev')
-  .allowUnknownOptions()
   .option('--host [host]', `[string] specify hostname`)
   .option('--port <port>', `[number] specify port`)
   .option('--https', `[boolean] use TLS + HTTP/2`)
@@ -60,18 +66,13 @@ cli.command('[root]')
     const target = root || process.cwd();
     const pkgWorkspace = await readJson(resolve(join(target, './package.json')));
 
-    const pkg = Object.keys(pkgWorkspace.config.packages).filter(key => {
-      if(key === app) {
-        return pkgWorkspace.config.packages[key];
-      }
-    }) as Record<string, any>;
+    const [pkg = null] = Object.keys(pkgWorkspace.config.packages).filter(key => key === app);
 
-    const appRoot = pkg ? pkg.dir : pkgWorkspace.config.packages[pkgWorkspace.config.default].dir;
+    const appRoot = pkg ? pkgWorkspace.config.packages[pkg].dir : pkgWorkspace.config.packages[pkgWorkspace.config.default].dir;
 
-    rest.root = appRoot;
-    rest.http = cleanOptions(rest);
+    const httpOptions = cleanOptions(rest);
 
-    await viteServer(rest);
+    await viteServer(appRoot, rest, httpOptions);
   });
 
 cli.command('create-workspace')

@@ -8,16 +8,16 @@
 import { createLogger, createServer } from 'vite';
 import chalk from 'chalk';
 
-export const viteServer = async (options: any) => {
+export const viteServer = async (root: string, options: any, httpOptions: any) => {
 	try {
 		const server = await createServer({
-      root: options.root,
+      root,
       base: options.base,
       mode: options.mode,
       configFile: options.config,
       logLevel: options.logLevel,
       clearScreen: options.clearScreen,
-      server: options.http
+      server: httpOptions
     });
 
     if (!server.httpServer) {

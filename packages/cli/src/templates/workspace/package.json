@@ -1,8 +1,8 @@
 {
   "name": "workspace",
   "devDependencies": {
-    "@websublime/vtx-common": "latest",
-    "@websublime/vtx-cli": "latest",
+    "@websublime/vtx-common": "^0.0.5",
+    "@websublime/vtx-cli": "^0.0.6",
     "@types/node": "^16.11.12",
     "@vitejs/plugin-vue": "1.10.0",
     "@vue/compiler-sfc": "3.2.22",
@@ -11,8 +11,9 @@
     "vue": "3.2.22"
   },
   "scripts": {
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "vtx dev --debug",
+    "build": "vtx build",
+    "preview": "vtx preview"
   },
   "workspaces": [
     "packages/*",
