@@ -1,5 +1,14 @@
 # @websublime/vtx-cli
 
+## 0.0.6
+
+### Patch Changes
+
+- [`bcc6e4f`](https://github.com/miguelramos/vtx/commit/bcc6e4f926ed575ab846e45819ca17f12e05f03a) Thanks [@miguelramos](https://github.com/miguelramos)! - Fix wrong root dir selection
+
+- Updated dependencies [[`bcc6e4f`](https://github.com/miguelramos/vtx/commit/bcc6e4f926ed575ab846e45819ca17f12e05f03a)]:
+  - @websublime/vtx-common@0.0.5
+
 ## 0.0.5
 
 ### Patch Changes
