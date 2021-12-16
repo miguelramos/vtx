@@ -1,5 +1,14 @@
 # @websublime/vtx-cli
 
+## 0.0.7
+
+### Patch Changes
+
+- [`b035828`](https://github.com/miguelramos/vtx/commit/b0358282f5072f1b123c19bfce1faee17e9c45b6) Thanks [@miguelramos](https://github.com/miguelramos)! - Fix plugin alias directories
+
+- Updated dependencies [[`b035828`](https://github.com/miguelramos/vtx/commit/b0358282f5072f1b123c19bfce1faee17e9c45b6)]:
+  - @websublime/vtx-common@0.0.6
+
 ## 0.0.6
 
 ### Patch Changes
