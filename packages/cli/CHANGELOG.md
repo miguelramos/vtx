@@ -1,5 +1,14 @@
 # @websublime/vtx-cli
 
+## 0.0.5
+
+### Patch Changes
+
+- [`9f27914`](https://github.com/miguelramos/vtx/commit/9f27914e7ea516ce8e0934b740ddddd92382bedc) Thanks [@miguelramos](https://github.com/miguelramos)! - Fix filter directories and check templates
+
+- Updated dependencies [[`9f27914`](https://github.com/miguelramos/vtx/commit/9f27914e7ea516ce8e0934b740ddddd92382bedc)]:
+  - @websublime/vtx-common@0.0.4
+
 ## 0.0.4
 
 ### Patch Changes
