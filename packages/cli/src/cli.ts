@@ -43,6 +43,7 @@ cli
 cli.command('[root]')
   .alias('serve') // the command is called 'serve' in Vite's API
   .alias('dev')
+  .allowUnknownOptions()
   .option('--host [host]', `[string] specify hostname`)
   .option('--port <port>', `[number] specify port`)
   .option('--https', `[boolean] use TLS + HTTP/2`)

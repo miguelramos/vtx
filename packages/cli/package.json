@@ -4,7 +4,7 @@
     "vtx": "bin/vtx.js"
   },
   "files": [
-    "dist",
+    "dist/*",
     "bin",
     "@types"
   ],

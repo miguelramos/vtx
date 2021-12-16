@@ -43,11 +43,15 @@ export const getWorkspacePackagesFolders = (rootPath: string|null = null) => {
     if (workspace.includes("/*")) {
       const folderWithWorkspaces = workspace.replace("/*", "");
       const workspacesFolders = readdirSync(
-        resolve(process.cwd(), root, folderWithWorkspaces)
+        resolve(process.cwd(), root, folderWithWorkspaces),
+        { withFileTypes: true }
       );
-      return workspacesFolders.map((folderName) =>
-        join(folderWithWorkspaces, folderName)
-      );
+
+      return workspacesFolders
+        .filter(dir => dir.isDirectory())
+        .map((folderName) =>
+          join(folderWithWorkspaces, folderName.name)
+        );
     }
     return workspace;
   });
