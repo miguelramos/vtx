@@ -1,5 +1,11 @@
 # @websublime/vtx-common
 
+## 0.0.7
+
+### Patch Changes
+
+- [`0b42460`](https://github.com/miguelramos/vtx/commit/0b42460926c0eb6068b41ae409169d8471cf53d7) Thanks [@miguelramos](https://github.com/miguelramos)! - Tsconfig templates. Workplace as now a base tsconfig. On create app tsconfig extends from base and path alias are added.
+
 ## 0.0.6
 
 ### Patch Changes
