@@ -94,11 +94,13 @@ cli.command('create-app')
   .action(async () => {
     const { app, target = process.cwd() } = await promptCreateApp();
     const pkg = await readJson(resolve(join(__dirname, './application/package.json')));
+    const tsconfig = await readJson(resolve(join(__dirname, './application/tsconfig.json')));
     const pkgWorkspace = await readJson(resolve(join(target, './package.json')));
 
     const { namespace = '' } = pkgWorkspace.config;
 
-    const name = namespace.length ? `${namespace}/${toValidPackageName(app)}` : toValidPackageName(app);
+    const hasNamespace = namespace.length > 0;
+    const name = hasNamespace ? `${namespace}/${toValidPackageName(app)}` : toValidPackageName(app);
 
     pkg.name = name;
 
@@ -118,8 +120,14 @@ cli.command('create-app')
       }
     };
 
+    tsconfig.paths = {
+      ...tsconfig.paths,
+      [hasNamespace ? `${name}/*` : `@/${name}/*`]: ['./src/*']
+    };
+
     await copy(resolve(join(__dirname, './application')), destiny, { recursive: true });
     await writeJson(join(destiny, 'package.json'), pkg, { encoding: 'utf8', spaces: 2, EOL });
+    await writeJson(join(destiny, 'tsconfig.json'), tsconfig, { encoding: 'utf8', spaces: 2, EOL });
     await writeJson(join(target, 'package.json'), pkgWorkspace, { encoding: 'utf8', spaces: 2, EOL });
   });
 
