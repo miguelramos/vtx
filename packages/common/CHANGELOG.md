@@ -1,5 +1,11 @@
 # @websublime/vtx-common
 
+## 0.0.8
+
+### Patch Changes
+
+- [`3659ffa`](https://github.com/miguelramos/vtx/commit/3659ffabbebda140cf9f8cf14946865e2ad061f9) - Change package.json template config
+
 ## 0.0.7
 
 ### Patch Changes
