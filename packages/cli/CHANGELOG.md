@@ -1,5 +1,14 @@
 # @websublime/vtx-cli
 
+## 0.0.10
+
+### Patch Changes
+
+- [`1198280`](https://github.com/miguelramos/vtx/commit/1198280ca6c858d0fd46a5c0c8961b47f7f5424a) - Add missing proprs to package.json template
+
+- Updated dependencies [[`1198280`](https://github.com/miguelramos/vtx/commit/1198280ca6c858d0fd46a5c0c8961b47f7f5424a)]:
+  - @websublime/vtx-common@0.0.9
+
 ## 0.0.9
 
 ### Patch Changes
