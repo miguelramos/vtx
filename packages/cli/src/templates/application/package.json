@@ -1,6 +1,20 @@
 {
   "name": "@monorepo/app",
   "version": "1.0.0",
+  "source": "src/index.ts",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc && vite build",
+    "build": "vite serve"
+  },
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^16.11.12",
