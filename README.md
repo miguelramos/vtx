@@ -73,7 +73,11 @@ After creating your workspace you are ready to add as many apps as you want. Ins
 vtx create-app
 ```
 
-And answer the questions to perform your app config.
+And answer the questions to perform your app config. Then perform install.
+
+```
+yarn
+```
 
 ### Lib
 Inside your workspace directory run:
@@ -101,6 +105,55 @@ Or you can adjust your package.json script to run different apps like:
 ```
 
 Vtx supports all options from vite-cli plus --app and --lib.
+
+### Config
+
+Vtx saves the configuration on root of your workspace in package.json. You can review it there.
+
+```
+"config": {
+  "packages": {
+    "todo": {
+      "name": "todo",
+      "namespace": "@workspace/todo",
+      "dir": "/workspace/vtx/temp/my-awesome/apps/todo",
+      "type": "application"
+    },
+    "services": {
+      "name": "services",
+      "namespace": "@lib/services",
+      "dir": "/workspace/vtx/temp/my-awesome/libs/services",
+      "type": "lib"
+    }
+  },
+  "default": "todo",
+  "namespace": "@workspace",
+  "root": "/workspace/vtx/temp/my-awesome"
+}
+```
+
+You can then manually perform config on your app to resolve and include a lib. On package.json of your app you can add the lib as dependency:
+
+```
+"dependencies": {
+  "@lib/services": "^1.0.0"
+}
+```
+
+And on the tsconfig you can resolve typings and imports:
+
+```
+"paths": {
+  "@workspace/todo/*": [
+    "./src/*"
+  ],
+  "@lib/services": [
+    "../../libs/services/src/index.ts"
+  ]
+}
+```
+
+yarn workspace will resolve your dependency and perform the necessary link to it.
 
 ## TODO
 
