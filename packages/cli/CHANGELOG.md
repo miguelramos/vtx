@@ -1,5 +1,14 @@
 # @websublime/vtx-cli
 
+## 0.0.12
+
+### Patch Changes
+
+- [`e2db9e8`](https://github.com/miguelramos/vtx/commit/e2db9e8ce5b921c42464d0e91436baaec26bbe8f) - Cli create lib template and command
+
+- Updated dependencies [[`e2db9e8`](https://github.com/miguelramos/vtx/commit/e2db9e8ce5b921c42464d0e91436baaec26bbe8f)]:
+  - @websublime/vtx-common@0.0.11
+
 ## 0.0.11
 
 ### Patch Changes
