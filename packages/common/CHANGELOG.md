@@ -1,5 +1,11 @@
 # @websublime/vtx-common
 
+## 0.0.10
+
+### Patch Changes
+
+- [`9229fc8`](https://github.com/miguelramos/vtx/commit/9229fc83db76811662094e5dd5756d33d25abe61) - Debug argument and vue template update
+
 ## 0.0.9
 
 ### Patch Changes
