@@ -151,7 +151,7 @@ cli.command('create-lib')
         name: toValidPackageName(lib),
         namespace: name,
         dir: destiny,
-        type: 'application'
+        type: 'lib'
       }
     };
 
@@ -166,7 +166,7 @@ cli.command('create-lib')
     await writeJson(join(target, 'package.json'), pkgWorkspace, { encoding: 'utf8', spaces: 2, EOL });
   });
 
-cli.command('build')
+cli.command('build [root]')
   .option('--target <target>', `[string] transpile target (default: 'modules')`)
   .option('--outDir <dir>', `[string] output directory (default: dist)`)
   .option(
@@ -197,8 +197,16 @@ cli.command('build')
     `[boolean] force empty outDir when it's outside of root`
   )
   .option('-w, --watch', `[boolean] rebuilds when modules have changed on disk`)
-  .action(async () => {
-    console.info('BUILD PROCESS');
+  .action(async (root: string, options: any) => {
+    const target = root || process.cwd();
+    const { lib, app } = options;
+
+    if(!lib && !app) {
+      console.error('Please define which app or lib to build!');
+      process.exit();
+    }
+
+    console.info(`BUILD PROCESS on ${target}`);
   });
 
 cli.help();
