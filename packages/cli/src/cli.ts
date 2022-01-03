@@ -7,7 +7,7 @@
 
 import { cac } from 'cac';
 import { version } from '../package.json';
-import { promptCreateWorkspace, promptCreateApp } from './prompt';
+import { promptCreateWorkspace, promptCreateApp, promptCreateLib } from './prompt';
 import { copy, writeJson, readJson } from 'fs-extra';
 import { join, resolve } from 'path';
 import { toValidPackageName } from '@websublime/vtx-common';
@@ -133,7 +133,72 @@ cli.command('create-app')
 
 cli.command('create-lib')
   .action(async () => {
-    console.dir('LIB');
+    const { lib, namespace = '', target = process.cwd() } = await promptCreateLib();
+    const pkg = await readJson(resolve(join(__dirname, './lib/package.json')));
+    const tsconfig = await readJson(resolve(join(__dirname, './lib/tsconfig.json')));
+    const pkgWorkspace = await readJson(resolve(join(target, './package.json')));
+
+    const hasNamespace = namespace.length > 0;
+    const name = hasNamespace ? `${namespace}/${toValidPackageName(lib)}` : toValidPackageName(lib);
+
+    pkg.name = name;
+
+    const destiny = join(target, './libs', toValidPackageName(lib));
+
+    pkgWorkspace.config.packages = {
+      ...pkgWorkspace.config.packages,
+      [toValidPackageName(lib)]: {
+        name: toValidPackageName(lib),
+        namespace: name,
+        dir: destiny,
+        type: 'application'
+      }
+    };
+
+    tsconfig.paths = {
+      ...tsconfig.paths,
+      [hasNamespace ? `${name}/*` : `@/${name}/*`]: ['./src/*']
+    };
+
+    await copy(resolve(join(__dirname, './lib')), destiny, { recursive: true });
+    await writeJson(join(destiny, 'package.json'), pkg, { encoding: 'utf8', spaces: 2, EOL });
+    await writeJson(join(destiny, 'tsconfig.json'), tsconfig, { encoding: 'utf8', spaces: 2, EOL });
+    await writeJson(join(target, 'package.json'), pkgWorkspace, { encoding: 'utf8', spaces: 2, EOL });
+  });
+
+cli.command('build')
+  .option('--target <target>', `[string] transpile target (default: 'modules')`)
+  .option('--outDir <dir>', `[string] output directory (default: dist)`)
+  .option(
+    '--assetsDir <dir>',
+    `[string] directory under outDir to place assets in (default: _assets)`
+  )
+  .option(
+    '--assetsInlineLimit <number>',
+    `[number] static asset base64 inline threshold in bytes (default: 4096)`
+  )
+  .option(
+    '--ssr [entry]',
+    `[string] build specified entry for server-side rendering`
+  )
+  .option(
+    '--sourcemap',
+    `[boolean] output source maps for build (default: false)`
+  )
+  .option(
+    '--minify [minifier]',
+    `[boolean | "terser" | "esbuild"] enable/disable minification, ` +
+      `or specify minifier to use (default: esbuild)`
+  )
+  .option('--manifest', `[boolean] emit build manifest json`)
+  .option('--ssrManifest', `[boolean] emit ssr manifest json`)
+  .option(
+    '--emptyOutDir',
+    `[boolean] force empty outDir when it's outside of root`
+  )
+  .option('-w, --watch', `[boolean] rebuilds when modules have changed on disk`)
+  .action(async () => {
+    console.info('BUILD PROCESS');
   });
 
 cli.help();

@@ -5,7 +5,7 @@
  * found in the LICENSE file at https://websublime.dev/license
  */
 
-import { createLogger, createServer } from 'vite';
+import { build, BuildOptions, createLogger, createServer } from 'vite';
 import chalk from 'chalk';
 
 export const viteServer = async (root: string, options: any, httpOptions: any) => {
@@ -45,4 +45,10 @@ export const viteServer = async (root: string, options: any, httpOptions: any) =
 
     process.exit(1)
 	}
+};
+
+export const viteBuild = async (root: string, options: BuildOptions) => {
+  console.info(root);
+
+  await build(options);
 };

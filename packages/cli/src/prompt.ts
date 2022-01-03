@@ -52,3 +52,27 @@ export const promptCreateApp = async () => {
 		onCancel: OperationCancel
 	});
 };
+
+export const promptCreateLib = async () => {
+	return await prompts([
+		{
+			name: 'lib',
+			type: 'text',
+			message: 'Your lib name'
+		},
+		{
+			name: 'namespace',
+			type: 'text',
+			message: 'Your namespace context: Example @lib or empty',
+			initial: ''
+		},
+		{
+			name: 'target',
+			type: 'text',
+			message: 'Target directory',
+			initial: process.cwd()
+		}
+	], {
+		onCancel: OperationCancel
+	});
+};
