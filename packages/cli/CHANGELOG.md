@@ -1,5 +1,14 @@
 # @websublime/vtx-cli
 
+## 0.0.13
+
+### Patch Changes
+
+- [`8a34cf1`](https://github.com/miguelramos/vtx/commit/8a34cf189cd0ec53c4effdfec9795addf12af910) - Fix typo on lib command type
+
+- Updated dependencies [[`8a34cf1`](https://github.com/miguelramos/vtx/commit/8a34cf189cd0ec53c4effdfec9795addf12af910)]:
+  - @websublime/vtx-common@0.0.12
+
 ## 0.0.12
 
 ### Patch Changes
