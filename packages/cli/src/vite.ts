@@ -47,8 +47,23 @@ export const viteServer = async (root: string, options: any, httpOptions: any) =
 	}
 };
 
-export const viteBuild = async (root: string, options: BuildOptions) => {
-  console.info(root);
+export const viteBuild = async (root: string, options:any, buildOptions: BuildOptions) => {
+  try {
+    await build({
+      root,
+      base: options.base,
+      mode: options.mode,
+      configFile: options.config || './vite.config.js',
+      logLevel: options.logLevel,
+      clearScreen: options.clearScreen,
+      build: buildOptions
+    })
+  } catch (e: any) {
+    createLogger(options.logLevel).error(
+      chalk.red(`error during build:\n${e.stack}`),
+      { error: e }
+    );
 
-  await build(options);
+    process.exit(1)
+  }
 };

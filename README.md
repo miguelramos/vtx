@@ -65,6 +65,7 @@ vtx create-workspace
 ```
 
 And answer to the questions from the cli to config your workspace.
+Vite config produced will have a config to resolve every entry  from your workspace and also will automatic resolve alias for your apps and libs that are created with this tool.
 
 ### Vue App
 After creating your workspace you are ready to add as many apps as you want. Inside your workspace directory run:
@@ -105,6 +106,24 @@ Or you can adjust your package.json script to run different apps like:
 ```
 
 Vtx supports all options from vite-cli plus --app and --lib.
+
+### Build
+
+To build just run:
+
+```
+vtx build --app todo
+```
+
+For type application will produce dist normally. The particular case goes for lib as:
+
+```
+vtx build --lib services
+```
+
+When your lib as created, is package.json as config entry for rollupOptions where you can pass vite rollupOtions as vite documentation describe. The lib will be created with the name that to you gave it and get necessary options from workspace package.json.
+
+It is mandatory to indicate which type and name you are building.
 
 ### Config
 

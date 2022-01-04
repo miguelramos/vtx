@@ -11,7 +11,7 @@ import { promptCreateWorkspace, promptCreateApp, promptCreateLib } from './promp
 import { copy, writeJson, readJson } from 'fs-extra';
 import { join, resolve } from 'path';
 import { toValidPackageName } from '@websublime/vtx-common';
-import { viteServer } from './vite';
+import { viteBuild, viteServer } from './vite';
 import { EOL } from 'os';
 
 const cli = cac('vtx');
@@ -199,14 +199,42 @@ cli.command('build [root]')
   .option('-w, --watch', `[boolean] rebuilds when modules have changed on disk`)
   .action(async (root: string, options: any) => {
     const target = root || process.cwd();
-    const { lib, app } = options;
+    const { lib = null, app = null, ...rest } = options;
 
     if(!lib && !app) {
       console.error('Please define which app or lib to build!');
-      process.exit();
+      process.exit(1);
     }
 
-    console.info(`BUILD PROCESS on ${target}`);
+    const name: string = app || lib;
+    const pkgWorkspace = await readJson(resolve(join(target, './package.json')));
+
+    const entry = Object.entries(pkgWorkspace.config.packages).find(([key]) => key === name);
+
+    if(!entry || !entry.length) {
+      console.error(`The ${name} is not defined on vtx config.`);
+      process.exit(1);
+    }
+
+    const [_, value] = entry as [string, Record<string, string>];
+    const isLib = value.type === 'lib';
+    const pkg = await readJson(resolve(join(value.dir, './package.json')));
+
+    let buildOptions = JSON.parse(JSON.stringify(rest));
+
+    if(isLib) {
+      buildOptions = {
+        ...buildOptions,
+        lib: {
+          entry: resolve(join(value.dir, pkg.source)),
+          fileName: (format: string) => `${value.name}.${format}.js`,
+          name: value.name
+        },
+        rollupOptions: pkg.config.rollupOptions
+      };
+    }
+
+    await viteBuild(value.dir, options, buildOptions);
   });
 
 cli.help();
