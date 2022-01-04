@@ -1,5 +1,13 @@
 # @websublime/vtx-common
 
+## 0.0.13
+
+### Patch Changes
+
+- [`b32cbef`](https://github.com/miguelramos/vtx/commit/b32cbef5030d173c9b8c4bae49cffc2f73646bec) - Config intro on readme file
+
+* [`c0a804b`](https://github.com/miguelramos/vtx/commit/c0a804ba8ba0c2365d9ccfe3e93cb0afba954249) Thanks [@miguelramos](https://github.com/miguelramos)! - Build cli command for apps and libs
+
 ## 0.0.12
 
 ### Patch Changes
