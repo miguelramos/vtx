@@ -20,7 +20,8 @@
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^16.11.12",
-    "@types/prompts": "^2.0.14"
+    "@types/prompts": "^2.0.14",
+    "type-fest": "^2.8.0"
   },
   "scripts": {
     "pack": "yarn build && yarn pack",

@@ -13,6 +13,8 @@ import { join, resolve } from 'path';
 import { toValidPackageName } from '@websublime/vtx-common';
 import { viteBuild, viteServer } from './vite';
 import { EOL } from 'os';
+import type { CliBuildOptions, CliDevOptions, PackageJsonConfig } from './types';
+import { PackageJson, TsConfigJson } from 'type-fest';
 
 const cli = cac('vtx');
 
@@ -60,110 +62,149 @@ cli.command('[root]')
     '--force',
     `[boolean] force the optimizer to ignore the cache and re-bundle`
   )
-  .action(async (root: string, options: any) => {
+  .action(async (root: string, options: CliDevOptions) => {
     const { l, lib, p, app, ...rest } = options;
 
     const target = root || process.cwd();
-    const pkgWorkspace = await readJson(resolve(join(target, './package.json')));
+    const pkgWorkspace: PackageJson = await readJson(resolve(join(target, './package.json')));
+    const { config } = pkgWorkspace;
 
-    const [pkg = null] = Object.keys(pkgWorkspace.config.packages).filter(key => key === app);
+    if(config) {
+      const { default: defaultPkg, packages } = (config as unknown) as PackageJsonConfig;
+      const [pkg = null] = Object.keys(packages).filter(key => key === app);
 
-    const appRoot = pkg ? pkgWorkspace.config.packages[pkg].dir : pkgWorkspace.config.packages[pkgWorkspace.config.default].dir;
+      const appRoot = pkg ? packages[pkg].dir : packages[defaultPkg].dir;
 
-    const httpOptions = cleanOptions(JSON.parse(JSON.stringify(rest)));
+      const httpOptions = cleanOptions(JSON.parse(JSON.stringify(rest)));
 
-    await viteServer(appRoot, rest, httpOptions);
+      await viteServer(appRoot, rest, httpOptions);
+    } else {
+      console.error('Workspace config is not valid.');
+      process.exit(1);
+    }
   });
 
 cli.command('create-workspace')
   .action(async () => {
     const { target, namespace = '', workspace } = await promptCreateWorkspace();
-    const pkg = await readJson(resolve(join(__dirname, './workspace/package.json')));
+    const pkg: PackageJson = await readJson(resolve(join(__dirname, './workspace/package.json')));
 
     const destiny = join(target, toValidPackageName(workspace));
 
-    pkg.name = toValidPackageName(workspace);
-    pkg.config.namespace = namespace;
-    pkg.config.root = destiny;
+    if(pkg.config) {
+      pkg.name = toValidPackageName(workspace);
+      pkg.config.namespace = namespace;
+      pkg.config.root = destiny;
 
-    await copy(resolve(join(__dirname, './workspace')), destiny, { recursive: true });
-    await writeJson(join(destiny, 'package.json'), pkg, { encoding: 'utf8', spaces: 2, EOL });
+      await copy(resolve(join(__dirname, './workspace')), destiny, { recursive: true });
+      await writeJson(join(destiny, 'package.json'), pkg, { encoding: 'utf8', spaces: 2, EOL });
+    } else {
+      console.error('Unable to read package.json from template cli.');
+      process.exit(1);
+    }
   });
 
 cli.command('create-app')
   .action(async () => {
     const { app, target = process.cwd() } = await promptCreateApp();
-    const pkg = await readJson(resolve(join(__dirname, './application/package.json')));
-    const tsconfig = await readJson(resolve(join(__dirname, './application/tsconfig.json')));
-    const pkgWorkspace = await readJson(resolve(join(target, './package.json')));
+    const pkg: PackageJson = await readJson(resolve(join(__dirname, './application/package.json')));
+    const tsconfig: TsConfigJson = await readJson(resolve(join(__dirname, './application/tsconfig.json')));
+    const pkgWorkspace: PackageJson = await readJson(resolve(join(target, './package.json')));
 
-    const { namespace = '' } = pkgWorkspace.config;
+    if(pkgWorkspace.config) {
+      const { config } = pkgWorkspace;
+      const { namespace = '', packages } = (config as unknown) as PackageJsonConfig
 
-    const hasNamespace = namespace.length > 0;
-    const name = hasNamespace ? `${namespace}/${toValidPackageName(app)}` : toValidPackageName(app);
+      const hasNamespace = namespace.length > 0;
+      const name = hasNamespace ? `${namespace}/${toValidPackageName(app)}` : toValidPackageName(app);
 
-    pkg.name = name;
+      pkg.name = name;
 
-    if(!Object.entries(pkgWorkspace.config.packages).length) {
-      pkgWorkspace.config.default = toValidPackageName(app);
-    }
-
-    const destiny = join(target, './apps', toValidPackageName(app));
-
-    pkgWorkspace.config.packages = {
-      ...pkgWorkspace.config.packages,
-      [toValidPackageName(app)]: {
-        name: toValidPackageName(app),
-        namespace: name,
-        dir: destiny,
-        type: 'application'
+      if(!Object.entries(packages).length) {
+        pkgWorkspace.config.default = toValidPackageName(app);
       }
-    };
 
-    tsconfig.paths = {
-      ...tsconfig.paths,
-      [hasNamespace ? `${name}/*` : `@/${name}/*`]: ['./src/*']
-    };
+      const destiny = join(target, './apps', toValidPackageName(app));
 
-    await copy(resolve(join(__dirname, './application')), destiny, { recursive: true });
-    await writeJson(join(destiny, 'package.json'), pkg, { encoding: 'utf8', spaces: 2, EOL });
-    await writeJson(join(destiny, 'tsconfig.json'), tsconfig, { encoding: 'utf8', spaces: 2, EOL });
-    await writeJson(join(target, 'package.json'), pkgWorkspace, { encoding: 'utf8', spaces: 2, EOL });
+      pkgWorkspace.config.packages = {
+        ...packages,
+        [toValidPackageName(app)]: {
+          name: toValidPackageName(app),
+          namespace: name,
+          dir: destiny,
+          type: 'application'
+        }
+      };
+
+      if(tsconfig.compilerOptions) {
+        tsconfig.compilerOptions.paths = {
+          ...tsconfig.compilerOptions.paths,
+          [hasNamespace ? `${name}/*` : `@/${name}/*`]: ['./src/*']
+        };
+      }
+
+      await copy(resolve(join(__dirname, './application')), destiny, { recursive: true });
+      await writeJson(join(destiny, 'package.json'), pkg, { encoding: 'utf8', spaces: 2, EOL });
+      await writeJson(join(destiny, 'tsconfig.json'), tsconfig, { encoding: 'utf8', spaces: 2, EOL });
+      await writeJson(join(target, 'package.json'), pkgWorkspace, { encoding: 'utf8', spaces: 2, EOL });
+    } else {
+      console.error('Workspace config is not valid.');
+      process.exit(1);
+    }
   });
 
 cli.command('create-lib')
   .action(async () => {
     const { lib, namespace = '', target = process.cwd() } = await promptCreateLib();
-    const pkg = await readJson(resolve(join(__dirname, './lib/package.json')));
-    const tsconfig = await readJson(resolve(join(__dirname, './lib/tsconfig.json')));
-    const pkgWorkspace = await readJson(resolve(join(target, './package.json')));
+    const pkg: PackageJson = await readJson(resolve(join(__dirname, './lib/package.json')));
+    const tsconfig: TsConfigJson = await readJson(resolve(join(__dirname, './lib/tsconfig.json')));
+    const pkgWorkspace: PackageJson = await readJson(resolve(join(target, './package.json')));
 
     const hasNamespace = namespace.length > 0;
     const name = hasNamespace ? `${namespace}/${toValidPackageName(lib)}` : toValidPackageName(lib);
 
-    pkg.name = name;
+    if(pkgWorkspace.config) {
+      pkg.name = name;
 
-    const destiny = join(target, './libs', toValidPackageName(lib));
+      const { config } = pkgWorkspace;
+      const { packages } = (config as unknown) as PackageJsonConfig
 
-    pkgWorkspace.config.packages = {
-      ...pkgWorkspace.config.packages,
-      [toValidPackageName(lib)]: {
-        name: toValidPackageName(lib),
-        namespace: name,
-        dir: destiny,
-        type: 'lib'
+      const destiny = join(target, './libs', toValidPackageName(lib));
+
+      pkgWorkspace.config.packages = {
+        ...packages,
+        [toValidPackageName(lib)]: {
+          name: toValidPackageName(lib),
+          namespace: name,
+          dir: destiny,
+          type: 'lib'
+        }
+      };
+
+      pkg.main = `./dist/${toValidPackageName(lib)}.umd.js`;
+      pkg.module = `./dist/${toValidPackageName(lib)}.es.js`;
+      pkg.exports = {
+        '.': {
+          'import': `./dist/${toValidPackageName(lib)}.es.js`,
+          'require': `./dist/${toValidPackageName(lib)}.umd.js`
+        }
+      };
+
+      if(tsconfig.compilerOptions) {
+        tsconfig.compilerOptions.paths = {
+          ...tsconfig.compilerOptions.paths,
+          [hasNamespace ? `${name}/*` : `@/${name}/*`]: ['./src/*']
+        };
       }
-    };
 
-    tsconfig.paths = {
-      ...tsconfig.paths,
-      [hasNamespace ? `${name}/*` : `@/${name}/*`]: ['./src/*']
-    };
-
-    await copy(resolve(join(__dirname, './lib')), destiny, { recursive: true });
-    await writeJson(join(destiny, 'package.json'), pkg, { encoding: 'utf8', spaces: 2, EOL });
-    await writeJson(join(destiny, 'tsconfig.json'), tsconfig, { encoding: 'utf8', spaces: 2, EOL });
-    await writeJson(join(target, 'package.json'), pkgWorkspace, { encoding: 'utf8', spaces: 2, EOL });
+      await copy(resolve(join(__dirname, './lib')), destiny, { recursive: true });
+      await writeJson(join(destiny, 'package.json'), pkg, { encoding: 'utf8', spaces: 2, EOL });
+      await writeJson(join(destiny, 'tsconfig.json'), tsconfig, { encoding: 'utf8', spaces: 2, EOL });
+      await writeJson(join(target, 'package.json'), pkgWorkspace, { encoding: 'utf8', spaces: 2, EOL });
+    } else {
+      console.error('Workspace config is not valid.');
+      process.exit(1);
+    }
   });
 
 cli.command('build [root]')
@@ -197,7 +238,7 @@ cli.command('build [root]')
     `[boolean] force empty outDir when it's outside of root`
   )
   .option('-w, --watch', `[boolean] rebuilds when modules have changed on disk`)
-  .action(async (root: string, options: any) => {
+  .action(async (root: string, options: CliBuildOptions) => {
     const target = root || process.cwd();
     const { lib = null, app = null, ...rest } = options;
 
@@ -206,35 +247,43 @@ cli.command('build [root]')
       process.exit(1);
     }
 
-    const name: string = app || lib;
-    const pkgWorkspace = await readJson(resolve(join(target, './package.json')));
+    const name = (app || lib) as string;
+    const pkgWorkspace: PackageJson = await readJson(resolve(join(target, './package.json')));
 
-    const entry = Object.entries(pkgWorkspace.config.packages).find(([key]) => key === name);
+    if(pkgWorkspace.config) {
+      const { config } = pkgWorkspace;
+      const { packages } = (config as unknown) as PackageJsonConfig
 
-    if(!entry || !entry.length) {
-      console.error(`The ${name} is not defined on vtx config.`);
+      const entry = Object.entries(packages).find(([key]) => key === name);
+
+      if(!entry || !entry.length) {
+        console.error(`The ${name} is not defined on vtx config.`);
+        process.exit(1);
+      }
+
+      const [_, value] = entry;
+      const isLib = value.type === 'lib';
+      const pkg: PackageJson & { source: string } = await readJson(resolve(join(value.dir, './package.json')));
+
+      let buildOptions = JSON.parse(JSON.stringify(rest));
+
+      if(isLib) {
+        buildOptions = {
+          ...buildOptions,
+          lib: {
+            entry: resolve(join(value.dir, pkg.source)),
+            fileName: (format: string) => `${value.name}.${format}.js`,
+            name: value.name
+          },
+          rollupOptions: pkg.config ? pkg.config.rollupOptions : {}
+        };
+      }
+
+      await viteBuild(value.dir, options, buildOptions);
+    } else {
+      console.error('Workspace config is not valid.');
       process.exit(1);
     }
-
-    const [_, value] = entry as [string, Record<string, string>];
-    const isLib = value.type === 'lib';
-    const pkg = await readJson(resolve(join(value.dir, './package.json')));
-
-    let buildOptions = JSON.parse(JSON.stringify(rest));
-
-    if(isLib) {
-      buildOptions = {
-        ...buildOptions,
-        lib: {
-          entry: resolve(join(value.dir, pkg.source)),
-          fileName: (format: string) => `${value.name}.${format}.js`,
-          name: value.name
-        },
-        rollupOptions: pkg.config.rollupOptions
-      };
-    }
-
-    await viteBuild(value.dir, options, buildOptions);
   });
 
 cli.help();

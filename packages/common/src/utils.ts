@@ -7,7 +7,7 @@
 
 import { join, resolve } from 'path';
 import { readdirSync } from 'fs';
-import { PackageJson } from './types';
+import { PackageJson } from 'type-fest';
 
 export const getWorkspaceRootPath = () => process.cwd();
 
@@ -31,13 +31,13 @@ export const getCommandArguments = (splitChar = ' ') => {
 export const getWorkspacePackagesFolders = (rootPath: string|null = null) => {
   const root = rootPath || '.';
 
-  const rootPkg: PackageJson = require(resolve(
+  const rootPkg: PackageJson & { source: string } = require(resolve(
     process.cwd(),
     root,
     "package.json"
   ));
 
-  const { workspaces = [] }: { workspaces: string[] } = rootPkg || {};
+  const { workspaces = [] }: { workspaces: string[] } = (rootPkg || {}) as any;
 
   const folders = workspaces.flatMap((workspace) => {
     if (workspace.includes("/*")) {
@@ -65,7 +65,7 @@ export const getWorkspacePackages = (rootPath: string) => {
   const folderPaths = getWorkspacePackagesFolders(rootPath);
 
   const packages = folderPaths
-    .map((folderPath) => require(resolve(folderPath, "package.json")) as PackageJson)
+    .map((folderPath) => require(resolve(folderPath, "package.json")) as PackageJson & { source: string })
     .filter((pkg) => pkg.source);
 
   return packages;
