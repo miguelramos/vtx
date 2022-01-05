@@ -1,5 +1,11 @@
 # @websublime/vtx-common
 
+## 0.0.14
+
+### Patch Changes
+
+- [#21](https://github.com/miguelramos/vtx/pull/21) [`0ad40b1`](https://github.com/miguelramos/vtx/commit/0ad40b179222a626b8ab2119f3260b6e23e2d12c) Thanks [@miguelramos](https://github.com/miguelramos)! - Cli typing improvements
+
 ## 0.0.13
 
 ### Patch Changes
