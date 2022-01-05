@@ -16,7 +16,7 @@
     "pack": "yarn build && yarn pack",
     "build": "node scripts/build.js"
   },
-  "version": "0.0.13",
+  "version": "0.0.14",
   "license": "MIT",
   "private": false
 }
