@@ -1,5 +1,11 @@
 # @websublime/vtx-common
 
+## 0.0.15
+
+### Patch Changes
+
+- [`c939e71`](https://github.com/miguelramos/vtx/commit/c939e7163c31f22aa719a7362d579e9b30344f20) Thanks [@miguelramos](https://github.com/miguelramos)! - Readme files on root packages
+
 ## 0.0.14
 
 ### Patch Changes
