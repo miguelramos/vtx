@@ -1,5 +1,11 @@
 # @websublime/vtx-cli
 
+## 0.0.17
+
+### Patch Changes
+
+- [`209ae18`](https://github.com/miguelramos/vtx/commit/209ae184fbfb44dee8d375c30c83ac3284ead2da) Thanks [@miguelramos](https://github.com/miguelramos)! - Optimize cli command support
+
 ## 0.0.16
 
 ### Patch Changes
