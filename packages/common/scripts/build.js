@@ -12,13 +12,6 @@ const { join, resolve } = require('path');
 
 const external = Object.entries(dependencies).map(([key]) => key);
 
-async function copyReadme() {
-	const readme = resolve(join(__dirname, '../../../README.md'));
-	const destiny = resolve(join(__dirname, '../dist/README.md'));
-
-	return copy(readme, destiny);
-}
-
 async function buildCommon() {
 	return build({
 		bundle: true,
@@ -34,7 +27,6 @@ async function buildCommon() {
 
 async function buildBundle() {
 	await buildCommon();
-	await copyReadme();
 }
 
 buildBundle();

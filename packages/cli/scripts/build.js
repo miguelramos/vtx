@@ -12,13 +12,6 @@ async function copyTemplates() {
 	return copy(src, destiny, { recursive: true });
 }
 
-async function copyReadme() {
-	const readme = resolve(join(__dirname, '../../../README.md'));
-	const destiny = resolve(join(__dirname, '../dist/README.md'));
-
-	return copy(readme, destiny);
-}
-
 async function buildCli() {
 	return build({
 		bundle: true,
@@ -35,7 +28,6 @@ async function buildCli() {
 async function buildBundle() {
 	await buildCli();
 	await copyTemplates();
-	await copyReadme();
 }
 
 buildBundle();
