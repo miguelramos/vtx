@@ -11,7 +11,7 @@ import { promptCreateWorkspace, promptCreateApp, promptCreateLib } from './promp
 import { copy, writeJson, readJson } from 'fs-extra';
 import { join, resolve } from 'path';
 import { toValidPackageName } from '@websublime/vtx-common';
-import { viteBuild, viteServer } from './vite';
+import { viteBuild, viteOptimize, viteServer } from './vite';
 import { EOL } from 'os';
 import type { CliBuildOptions, CliDevOptions, PackageJsonConfig } from './types';
 import { PackageJson, TsConfigJson } from 'type-fest';
@@ -280,6 +280,44 @@ cli.command('build [root]')
       }
 
       await viteBuild(value.dir, options, buildOptions);
+    } else {
+      console.error('Workspace config is not valid.');
+      process.exit(1);
+    }
+  });
+
+cli
+  .command('optimize [root]')
+  .option(
+    '--force',
+    `[boolean] force the optimizer to ignore the cache and re-bundle`
+  )
+  .action(async (root: string, options: CliDevOptions & { force: boolean }) => {
+    const target = root || process.cwd();
+    const { lib = null, app = null, ...rest } = options;
+
+    if(!lib && !app) {
+      console.error('Please define which app or lib to build!');
+      process.exit(1);
+    }
+
+    const name = (app || lib) as string;
+    const pkgWorkspace: PackageJson = await readJson(resolve(join(target, './package.json')));
+
+    if(pkgWorkspace.config) {
+      const { config } = pkgWorkspace;
+      const { packages } = (config as unknown) as PackageJsonConfig
+
+      const entry = Object.entries(packages).find(([key]) => key === name);
+
+      if(!entry || !entry.length) {
+        console.error(`The ${name} is not defined on vtx config.`);
+        process.exit(1);
+      }
+
+      const [_, value] = entry;
+
+      await viteOptimize(value.dir, rest);
     } else {
       console.error('Workspace config is not valid.');
       process.exit(1);
