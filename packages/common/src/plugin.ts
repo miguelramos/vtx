@@ -6,7 +6,7 @@
  */
 
 import { join } from 'path';
-import { PackageJson } from './types';
+import { PackageJson } from 'type-fest';
 import { getWorkspacePackages } from './utils';
 
 /**
@@ -29,10 +29,14 @@ export function workspacesAlias(rootPaths: string[], exclude: string[] = []) {
             ...Object.fromEntries(
               rootPaths
                 .flatMap((rootPath) => getWorkspacePackages(rootPath))
-                .filter(([_, pkg]) => !exclude.includes((pkg as PackageJson).name))
+                .filter(([_, pkg]) => {
+                  const { name = null } = (pkg || {}) as PackageJson;
+                  
+                  return name && !exclude.includes(name);
+                })
                 .map(([folder, pkg]) => {
                   const dir = folder as string;
-                  const pkgJson = pkg as PackageJson;
+                  const pkgJson = pkg as PackageJson & { source: string };
 
                   return [pkgJson.name, join(dir, pkgJson.source)];
                 })
