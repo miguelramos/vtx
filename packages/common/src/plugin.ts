@@ -6,15 +6,21 @@
  */
 
 import { join } from 'path';
-import { getWorkspacePackages, getWorkspacePackagesFolders } from './utils';
+import { PackageJson } from './types';
+import { getWorkspacePackages } from './utils';
 
-export function workspacesAlias(...rootPaths: string[]) {
+/**
+ * Create alias for vite
+ * 
+ * @param rootPaths - Root paths to looking for
+ * @param exclude - Exclude apps, libs or packages by is package.json name
+ */
+export function workspacesAlias(rootPaths: string[], exclude: string[] = []) {
   return {
     name: "vite-plugin-workspace-alias",
 
     config: (userConfig: Record<string, any>) => {
       const { alias = {} } = userConfig.resolve || {};
-      const folders = getWorkspacePackagesFolders();
 
       const modifiedConfig = {
         ...userConfig,
@@ -23,8 +29,12 @@ export function workspacesAlias(...rootPaths: string[]) {
             ...Object.fromEntries(
               rootPaths
                 .flatMap((rootPath) => getWorkspacePackages(rootPath))
-                .map((pkg, idx) => {
-                  return [pkg.name, join(folders[idx], pkg.source)];
+                .filter(([_, pkg]) => !exclude.includes((pkg as PackageJson).name))
+                .map(([folder, pkg]) => {
+                  const dir = folder as string;
+                  const pkgJson = pkg as PackageJson;
+
+                  return [pkgJson.name, join(dir, pkgJson.source)];
                 })
             ),
             ...alias,

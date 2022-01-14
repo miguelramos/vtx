@@ -42,6 +42,7 @@ export const getWorkspacePackagesFolders = (rootPath: string|null = null) => {
   const folders = workspaces.flatMap((workspace) => {
     if (workspace.includes("/*")) {
       const folderWithWorkspaces = workspace.replace("/*", "");
+
       const workspacesFolders = readdirSync(
         resolve(process.cwd(), root, folderWithWorkspaces),
         { withFileTypes: true }
@@ -65,8 +66,11 @@ export const getWorkspacePackages = (rootPath: string) => {
   const folderPaths = getWorkspacePackagesFolders(rootPath);
 
   const packages = folderPaths
-    .map((folderPath) => require(resolve(folderPath, "package.json")) as PackageJson & { source: string })
-    .filter((pkg) => pkg.source);
+    .map((folderPath) => {
+      const pkg = require(resolve(folderPath, "package.json")) as PackageJson & { source: string };
+      return [folderPath, pkg];
+    })
+    .filter(({0: _, 1: pkg}) => (pkg as PackageJson).source);
 
   return packages;
 }
