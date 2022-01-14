@@ -10,7 +10,7 @@
   ],
   "main": "./dist/cli.js",
   "dependencies": {
-    "@websublime/vtx-common": "^0.0.15",
+    "@websublime/vtx-common": "^0.0.16",
     "cac": "^6.7.12",
     "chalk": "^4.1.2",
     "fs-extra": "^10.0.0",
@@ -31,7 +31,7 @@
     "cli:create-workspace": "node dist/cli.js create-workspace",
     "cli:create-app": "node dist/cli.js create-app"
   },
-  "version": "0.0.17",
+  "version": "0.0.18",
   "license": "MIT",
   "private": false
 }

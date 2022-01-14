@@ -1,5 +1,14 @@
 # @websublime/vtx-common
 
+## 0.0.16
+
+### Patch Changes
+
+- [`f2d8df9`](https://github.com/miguelramos/vtx/commit/f2d8df9d3bff01d499472bcd680702671f2b7427) - Packages resolution by name and option to exclude from alias
+
+  Package were resolved by array index entrance and that could be problem if user changes order in packages entry. Now they are resolved by name
+  and vite plugin as a new option to exclude from alias apps, libs or packages. Also root package as to be an array of string.
+
 ## 0.0.15
 
 ### Patch Changes
